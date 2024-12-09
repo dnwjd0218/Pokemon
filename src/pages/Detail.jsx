@@ -2,6 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+const NameSkeleton = () => (
+    <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mb-6 mx-auto" />
+);
+
+const ImageSkeleton = () => (
+    <div className="w-40 h-40 bg-gray-200 rounded-lg animate-pulse mx-auto mb-6" />
+);
+
+const InfoCardSkeleton = () => (
+    <div className="p-4 rounded-lg shadow-md border border-gray-200 bg-white space-y-2">
+        <div className="h-6 w-24 bg-gray-200 rounded animate-pulse mb-2" />
+        <div className="space-y-2">
+            <div className="h-4 w-full bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse" />
+        </div>
+    </div>
+);
+
 const Detail = () => {
     const { id } = useParams();
     const [pokemonData, setPokemonData] = useState({
@@ -45,24 +63,31 @@ const Detail = () => {
                         return moveResponse.data.names.find(el => el.language.name === "ko")?.name || "기술 이름 없음";
                     })
                 );
+
                 // 진화
                 const evolutionChainUrl = speciesData.evolution_chain.url;
                 const evolutionChainResponse = await axios.get(evolutionChainUrl);
                 const evolutionChain = evolutionChainResponse.data.chain;
 
-                const findNextEvolution = async (chain) => {
-                    if (chain.evolves_to.length > 0) {
+                const findNextEvolution = async (chain, currentId) => {
+                    const chainId = parseInt(chain.species.url.split('/').slice(-2, -1)[0]);
+                    
+                    if (chainId === currentId && chain.evolves_to.length > 0) {
                         const nextEvolutionSpeciesUrl = chain.evolves_to[0].species.url;
                         const nextEvolutionSpeciesResponse = await axios.get(nextEvolutionSpeciesUrl);
                         const nextEvolutionSpeciesData = nextEvolutionSpeciesResponse.data;
-                        const nextEvolutionName = nextEvolutionSpeciesData.names.find(el => el.language.name === "ko")?.name || "진화 없음";
-
-                        return nextEvolutionName;
+                        return nextEvolutionSpeciesData.names.find(el => el.language.name === "ko")?.name || "진화 없음";
                     }
+
+                    if (chain.evolves_to.length > 0) {
+                        const nextEvolution = await findNextEvolution(chain.evolves_to[0], currentId);
+                        if (nextEvolution) return nextEvolution;
+                    }
+
                     return null;
                 };
 
-                const nextEvolutionName = await findNextEvolution(evolutionChain);
+                const nextEvolutionName = await findNextEvolution(evolutionChain, parseInt(id));
 
                 setPokemonData({
                     name,
@@ -86,11 +111,37 @@ const Detail = () => {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center h-screen bg-yellow-100">
-                <p className="text-2xl font-bold text-gray-500">loading...</p>
+            <div className="flex flex-col items-center p-6 bg-yellow-100 min-h-screen">
+                <NameSkeleton />
+                <ImageSkeleton />
+                <div className="w-full max-w-lg space-y-4">
+                    {[...Array(5)].map((_, index) => (
+                        <InfoCardSkeleton key={index} />
+                    ))}
+                </div>
             </div>
         );
     }
+
+    const infoItems = [
+        { title: "설명", content: pokemonData.description, type: "text" },
+        { title: "종", content: pokemonData.genus, type: "text" },
+        {
+            title: "특성",
+            content: pokemonData.abilities,
+            type: "list"
+        },
+        {
+            title: "기술",
+            content: pokemonData.moves,
+            type: "list"
+        },
+        pokemonData.nextEvolutionName !== "진화 없음" && {
+            title: "다음 진화 포켓몬",
+            content: pokemonData.nextEvolutionName,
+            type: "text"
+        },
+    ];
 
     return (
         <div className="flex flex-col items-center p-6 bg-yellow-100 min-h-screen">
@@ -104,44 +155,24 @@ const Detail = () => {
                 />
             </div>
             <div className="w-full max-w-lg space-y-4">
-                {[
-                    { title: "설명", content: pokemonData.description },
-                    { title: "종", content: pokemonData.genus },
-                    {
-                        title: "특성",
-                        content: (
-                            <ul className="list-disc pl-5">
-                                {pokemonData.abilities.map((ability, index) => (
-                                    <li key={index}>{ability}</li>
-                                ))}
-                            </ul>
-                        ),
-                    },
-                    {
-                        title: "기술",
-                        content: (
-                            <ul className="list-disc pl-5">
-                                {pokemonData.moves.map((move, index) => (
-                                    <li key={index}>{move}</li>
-                                ))}
-                            </ul>
-                        ),
-                    },
-                    pokemonData.nextEvolutionName !== "진화 없음" && {
-                        title: "다음 진화 포켓몬",
-                        content: pokemonData.nextEvolutionName,
-                    },
-                ].map(
-                    (item, idx) =>
-                        item && (
-                            <div
-                                key={idx}
-                                className="p-4 rounded-lg shadow-md border border-gray-200 bg-white hover:bg-yellow-50"
-                            >
-                                <h2 className="font-semibold text-lg mb-2 text-gray-500">{item.title}</h2>
-                                <p className="text-gray-700">{item.content}</p>
-                            </div>
-                        )
+                {infoItems.map((item, idx) =>
+                    item && (
+                        <div
+                            key={idx}
+                            className="p-4 rounded-lg shadow-md border border-gray-200 bg-white hover:bg-yellow-50"
+                        >
+                            <h2 className="font-semibold text-lg mb-2 text-gray-500">{item.title}</h2>
+                            {item.type === "list" ? (
+                                <ul className="list-disc pl-5">
+                                    {item.content.map((entry, index) => (
+                                        <li key={index} className="text-gray-700">{entry}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div className="text-gray-700">{item.content}</div>
+                            )}
+                        </div>
+                    )
                 )}
             </div>
         </div>

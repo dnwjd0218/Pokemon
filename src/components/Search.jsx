@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useSearchStore from '../store/SearchStore';
 
 function Search() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const { setSearchTerm, clearSearch } = useSearchStore();
 
     const handleInputChange = (e) => {
         const value = e.target.value;
-        setSearchTerm(value); 
+        setSearchTerm(value);
+        
+        if (location.pathname !== '/') {
+            navigate('/');
+        }
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSearchOpen(false);
-        navigate('/');
+        if (location.pathname !== '/') {
+            navigate('/');
+        }
     };
 
     const handleClose = () => {
         setIsSearchOpen(false);
-        clearSearch(); 
+        clearSearch();
     };
 
     return (
@@ -32,11 +38,11 @@ function Search() {
                         type="text"
                         onChange={handleInputChange}
                         placeholder="포켓몬 이름을 입력하세요"
-                        className="bg-red-500 px-4 py-1 rounded text-white focus:outline-none "
+                        className="bg-red-500 px-4 py-1 rounded text-white focus:outline-none"
                         autoFocus
                     />
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="ml-2 hover:text-yellow-200"
                         onClick={handleClose}
                     >
@@ -44,8 +50,8 @@ function Search() {
                     </button>
                 </form>
             ) : (
-                <span 
-                    className="hover:text-green-700 cursor-pointer"
+                <span
+                    className="hover:text-yellow-200 cursor-pointer"
                     onClick={() => setIsSearchOpen(true)}
                 >
                     검색

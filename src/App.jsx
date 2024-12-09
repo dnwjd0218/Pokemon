@@ -1,19 +1,43 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Main from './pages/Main';
 import Detail from './pages/Detail';
+import Favorite from './pages/Favorite';
+import { supabase } from '../supabase/supabaseClient';
+import useAuthStore from './store/AuthStore';
 
 function App() {
-  return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/detail/:id" element={<Detail />} />
-      </Routes>
-    </Router>
-  );
+    const setUser = useAuthStore(state => state.setUser);
+
+    useEffect(() => {
+        // 현재 세션 확인
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session?.user) {
+                setUser(session.user);
+            }
+        });
+
+        // 인증 상태 변경 감지
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [setUser]);
+
+    return (
+        <div>
+            <Header />
+            <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/detail/:id" element={<Detail />} />
+                <Route path="/favorite" element={<Favorite />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
