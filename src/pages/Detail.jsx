@@ -3,24 +3,23 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const NameSkeleton = () => (
-    <div className="text-3xl font-bold mb-6">
-        <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mx-auto" />
+    <div className="text-4xl font-bold mb-8 text-center text-gray-800">
+        <div className="h-12 w-48 bg-gray-200 rounded-lg animate-pulse mx-auto" />
     </div>
 );
 
 const ImageSkeleton = () => (
-    <div className="mb-6">
-        <div className="w-40 h-40 bg-gray-200 rounded-lg animate-pulse mx-auto" />
-    </div>
+    <div className="w-48 h-48 bg-gray-200 rounded-lg animate-pulse mx-auto" />
 );
 
 const InfoCardSkeleton = () => (
-    <div className="p-4 rounded-lg shadow-md border border-gray-200 bg-white hover:bg-yellow-50">
-        <div className="font-semibold text-lg mb-2 text-gray-500">
-            <div className="h-6 w-24 bg-gray-200 rounded animate-pulse" />
+    <div className="p-6 rounded-xl border border-gray-100 bg-white shadow-md">
+        <div className="text-xl font-bold mb-4 text-gray-700">
+            <div className="h-7 w-32 bg-gray-200 rounded animate-pulse" />
         </div>
-        <div className="text-gray-700">
+        <div className="text-gray-600">
             <div className="h-4 w-full bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse mt-2" />
         </div>
     </div>
 );
@@ -116,13 +115,17 @@ const Detail = () => {
 
     if (isLoading) {
         return (
-            <div className="flex flex-col items-center p-6 bg-yellow-100 min-h-screen pt-24">
-                <NameSkeleton />
-                <ImageSkeleton />
-                <div className="w-full max-w-lg space-y-4">
-                    {[...Array(5)].map((_, index) => (
-                        <InfoCardSkeleton key={index} />
-                    ))}
+            <div className="p-4 pt-24 bg-yellow-100 min-h-screen">
+                <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+                    <NameSkeleton />
+                    <div className="mb-8 bg-gray-50 p-6 rounded-xl shadow-inner">
+                        <ImageSkeleton />
+                    </div>
+                    <div className="space-y-6">
+                        {[...Array(5)].map((_, index) => (
+                            <InfoCardSkeleton key={index} />
+                        ))}
+                    </div>
                 </div>
             </div>
         );
