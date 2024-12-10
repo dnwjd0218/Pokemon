@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
-import { supabase } from '../../supabase/supabaseClient';
+import { supabase } from '../supabase/supabaseClient';
 import useAuthStore from '../store/AuthStore';
 
 function Header() {

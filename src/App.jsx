@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Main from './pages/Main';
 import Detail from './pages/Detail';
 import Favorite from './pages/Favorite';
-import { supabase } from '../supabase/supabaseClient';
+import { supabase } from './supabase/supabaseClient';
 import useAuthStore from './store/AuthStore';
 
 function App() {
