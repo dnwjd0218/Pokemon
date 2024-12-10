@@ -17,7 +17,7 @@ function Favorite() {
     };
 
     return (
-<div className="p-4 pt-24 bg-gradient-to-b from-yellow-50 to-yellow-100 min-h-screen">
+<div className="p-4 pt-24 bg-yellow-100 min-h-screen">
     <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-800">찜한 포켓몬</h2>

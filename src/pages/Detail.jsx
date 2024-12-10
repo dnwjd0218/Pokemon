@@ -3,19 +3,24 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const NameSkeleton = () => (
-    <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mb-6 mx-auto" />
+    <div className="text-3xl font-bold mb-6">
+        <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse mx-auto" />
+    </div>
 );
 
 const ImageSkeleton = () => (
-    <div className="w-40 h-40 bg-gray-200 rounded-lg animate-pulse mx-auto mb-6" />
+    <div className="mb-6">
+        <div className="w-40 h-40 bg-gray-200 rounded-lg animate-pulse mx-auto" />
+    </div>
 );
 
 const InfoCardSkeleton = () => (
-    <div className="p-4 rounded-lg shadow-md border border-gray-200 bg-white space-y-2">
-        <div className="h-6 w-24 bg-gray-200 rounded animate-pulse mb-2" />
-        <div className="space-y-2">
+    <div className="p-4 rounded-lg shadow-md border border-gray-200 bg-white hover:bg-yellow-50">
+        <div className="font-semibold text-lg mb-2 text-gray-500">
+            <div className="h-6 w-24 bg-gray-200 rounded animate-pulse" />
+        </div>
+        <div className="text-gray-700">
             <div className="h-4 w-full bg-gray-200 rounded animate-pulse" />
-            <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse" />
         </div>
     </div>
 );
@@ -111,7 +116,7 @@ const Detail = () => {
 
     if (isLoading) {
         return (
-            <div className="flex flex-col items-center p-6 bg-yellow-100 min-h-screen">
+            <div className="flex flex-col items-center p-6 bg-yellow-100 min-h-screen pt-24">
                 <NameSkeleton />
                 <ImageSkeleton />
                 <div className="w-full max-w-lg space-y-4">
@@ -144,7 +149,7 @@ const Detail = () => {
     ];
 
     return (
-        <div className="p-4 pt-24 bg-gradient-to-b from-yellow-50 to-yellow-100 min-h-screen">
+        <div className="p-4 pt-24 bg-yellow-100 min-h-screen">
             <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
                 <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">{pokemonData.name}</h1>
                 <div className="mb-8 bg-gray-50 p-6 rounded-xl shadow-inner">

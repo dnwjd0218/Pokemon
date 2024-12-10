@@ -6,9 +6,10 @@ import useFavoriteStore from '../store/FavoriteStore';
 import { Heart } from 'lucide-react';
 
 const PokemonCardSkeleton = () => (
-    <div className="border p-4 flex flex-col items-center bg-white shadow-lg animate-pulse relative rounded-xl">
-        <div className="w-20 h-20 bg-gray-200 rounded mb-2" />
-        <div className="h-6 w-24 bg-gray-200 rounded" />
+    <div className="border border-gray-200 p-6 flex flex-col items-center bg-white rounded-xl shadow-lg relative">
+        <div className="absolute top-3 right-3 w-6 h-6 bg-gray-200 rounded-full animate-pulse" />
+        <div className="w-24 h-24 bg-gray-200 rounded-lg mb-4 animate-pulse" />
+        <div className="w-24 h-6 bg-gray-200 rounded animate-pulse" />
     </div>
 );
 
@@ -132,6 +133,8 @@ function Main() {
 
         fetchPokemonList();
     }, [page, searchTerm]);
+
+    
 
     // 검색
     useEffect(() => {
