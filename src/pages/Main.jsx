@@ -6,7 +6,7 @@ import useFavoriteStore from '../store/FavoriteStore';
 import { Heart } from 'lucide-react';
 
 const PokemonCardSkeleton = () => (
-    <div className="border p-4 flex flex-col items-center bg-white shadow-lg animate-pulse relative">
+    <div className="border p-4 flex flex-col items-center bg-white shadow-lg animate-pulse relative rounded-xl">
         <div className="w-20 h-20 bg-gray-200 rounded mb-2" />
         <div className="h-6 w-24 bg-gray-200 rounded" />
     </div>
@@ -48,7 +48,7 @@ function Main() {
                         continue;
                     }
                 }
-                
+
                 setAllPokemons(results.sort((a, b) => a.id - b.id));
             } catch (error) {
                 console.error('전체 포켓몬 데이터 로딩 오류', error);
@@ -84,12 +84,12 @@ function Main() {
     useEffect(() => {
         async function fetchPokemonList() {
             if (searchTerm) return;
-            
+
             setIsLoading(true);
             try {
                 const startIdx = (page - 1) * ITEMS_PER_PAGE;
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species?limit=${ITEMS_PER_PAGE}&offset=${startIdx}`);
-                
+
                 if (startIdx >= response.data.count || response.data.results.length === 0) {
                     setHasMore(false);
                     return;
@@ -142,7 +142,7 @@ function Main() {
 
         setIsSearchLoading(true);
         const normalizedSearchTerm = searchTerm.toLowerCase().trim();
-        
+
         if (allPokemons.length > 0) {
             const filtered = allPokemons.filter(pokemon =>
                 pokemon.name.toLowerCase().includes(normalizedSearchTerm)
@@ -150,7 +150,7 @@ function Main() {
             setSearchResults(filtered);
             setIsSearchLoading(false);
         } else if (pokemonList.length > 0) {
-            const filtered = pokemonList.filter(pokemon => 
+            const filtered = pokemonList.filter(pokemon =>
                 pokemon.name.toLowerCase().includes(normalizedSearchTerm)
             );
             setSearchResults(filtered);
@@ -166,7 +166,7 @@ function Main() {
     const displayedPokemon = searchTerm.trim() ? searchResults : pokemonList;
 
     return (
-        <div className="p-4 bg-yellow-100 min-h-screen">
+        <div className="p-4 bg-yellow-100 min-h-screen pt-24">
             {displayedPokemon.length === 0 && searchTerm && !isSearchLoading && (
                 <p className="text-center text-gray-500 my-4">검색 결과가 없습니다.</p>
             )}
@@ -179,15 +179,20 @@ function Main() {
                         <div
                             key={pokemon.id}
                             ref={isLastItem ? lastPokemonRef : null}
-                            className="border p-4 flex flex-col items-center cursor-pointer hover:bg-yellow-200 bg-white shadow-lg relative"
+                            className="border border-gray-200 p-6 flex flex-col items-center cursor-pointer bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-yellow-50 relative group"
                             onClick={() => navigate(`/detail/${pokemon.id}`)}
                         >
-                            <Heart 
+                            <Heart
                                 onClick={(e) => handleFavoriteClick(e, pokemon)}
-                                className={`absolute top-2 right-2 ${isFavorite ? 'text-red-500 fill-current' : 'text-gray-300'}`}
+                                className={`absolute top-3 right-3 transition-all duration-300 ${isFavorite ? 'text-red-500 fill-current scale-110' : 'text-gray-300 group-hover:scale-110'
+                                    }`}
                             />
-                            <img src={pokemon.image} alt={pokemon.name} className="w-20 h-20" />
-                            <p className="mt-2 font-bold text-gray-500">{pokemon.name}</p>
+                            <img
+                                src={pokemon.image}
+                                alt={pokemon.name}
+                                className="w-24 h-24 transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <p className="mt-4 font-bold text-gray-700 text-lg">{pokemon.name}</p>
                         </div>
                     );
                 })}

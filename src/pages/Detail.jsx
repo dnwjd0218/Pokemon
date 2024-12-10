@@ -71,7 +71,7 @@ const Detail = () => {
 
                 const findNextEvolution = async (chain, currentId) => {
                     const chainId = parseInt(chain.species.url.split('/').slice(-2, -1)[0]);
-                    
+
                     if (chainId === currentId && chain.evolves_to.length > 0) {
                         const nextEvolutionSpeciesUrl = chain.evolves_to[0].species.url;
                         const nextEvolutionSpeciesResponse = await axios.get(nextEvolutionSpeciesUrl);
@@ -144,36 +144,38 @@ const Detail = () => {
     ];
 
     return (
-        <div className="flex flex-col items-center p-6 bg-yellow-100 min-h-screen">
-            <h1 className="text-3xl font-bold mb-6">{pokemonData.name}</h1>
-            <div className="mb-6">
-                <img
-                    src={isFront ? pokemonData.frontImage : pokemonData.backImage}
-                    alt={pokemonData.name}
-                    className="w-40 h-40 mx-auto cursor-pointer"
-                    onClick={() => setIsFront(!isFront)}
-                />
-            </div>
-            <div className="w-full max-w-lg space-y-4">
-                {infoItems.map((item, idx) =>
-                    item && (
-                        <div
-                            key={idx}
-                            className="p-4 rounded-lg shadow-md border border-gray-200 bg-white hover:bg-yellow-50"
-                        >
-                            <h2 className="font-semibold text-lg mb-2 text-gray-500">{item.title}</h2>
-                            {item.type === "list" ? (
-                                <ul className="list-disc pl-5">
-                                    {item.content.map((entry, index) => (
-                                        <li key={index} className="text-gray-700">{entry}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div className="text-gray-700">{item.content}</div>
-                            )}
-                        </div>
-                    )
-                )}
+        <div className="p-4 pt-24 bg-gradient-to-b from-yellow-50 to-yellow-100 min-h-screen">
+            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+                <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">{pokemonData.name}</h1>
+                <div className="mb-8 bg-gray-50 p-6 rounded-xl shadow-inner">
+                    <img
+                        src={isFront ? pokemonData.frontImage : pokemonData.backImage}
+                        alt={pokemonData.name}
+                        className="w-48 h-48 mx-auto cursor-pointer transition-all duration-300 hover:scale-110"
+                        onClick={() => setIsFront(!isFront)}
+                    />
+                </div>
+                <div className="space-y-6">
+                    {infoItems.map((item, idx) =>
+                        item && (
+                            <div
+                                key={idx}
+                                className="p-6 rounded-xl border border-gray-100 bg-white shadow-md hover:shadow-lg transition-all duration-300"
+                            >
+                                <h2 className="text-xl font-bold mb-4 text-gray-700">{item.title}</h2>
+                                {item.type === "list" ? (
+                                    <ul className="list-disc pl-6 space-y-2">
+                                        {item.content.map((entry, index) => (
+                                            <li key={index} className="text-gray-600">{entry}</li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="text-gray-600">{item.content}</div>
+                                )}
+                            </div>
+                        )
+                    )}
+                </div>
             </div>
         </div>
     );

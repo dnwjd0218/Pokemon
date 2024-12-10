@@ -32,19 +32,23 @@ function Header() {
     };
 
     return (
-        <header className="bg-red-600 text-white p-4">
+        <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white p-4 z-50 shadow-lg backdrop-blur-sm bg-opacity-95">
             <div className="flex justify-between items-center max-w-7xl mx-auto">
-                <h1 className="text-2xl font-bold">포켓몬도감</h1>
-                <nav className="flex items-center space-x-6">
-                    <Link to="/" className="hover:text-yellow-200">메인</Link>
-                    <Link to="/favorite" className="hover:text-yellow-200">찜하기</Link>
+                <h1 className="text-3xl font-bold hover:text-yellow-300 transition-all transform ">
+                    <Link to="/">포켓몬 도감</Link>
+                </h1>
+                <nav className="flex items-center space-x-8">
+                    <Link to="/" className="hover:text-yellow-300 transition-all hover:scale-105">메인</Link>
+                    <Link to="/favorite" className="hover:text-yellow-300 transition-all hover:scale-105">찜하기</Link>
                     <Search />
                     {user ? (
                         <div className="flex items-center space-x-4">
-                            <span className="text-sm">{user.user_metadata.full_name}</span>
+                            <span className="text-sm bg-yellow-200 text-red-600 px-4 py-2 rounded-full font-bold shadow-md">
+                                {user.user_metadata.full_name} 님
+                            </span>
                             <button
                                 onClick={handleLogout}
-                                className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
+                                className="px-4 py-2 bg-white text-red-600 rounded-full font-bold hover:bg-yellow-300 transition-all hover:scale-105 shadow-md"
                             >
                                 로그아웃
                             </button>
@@ -52,7 +56,7 @@ function Header() {
                     ) : (
                         <button
                             onClick={handleKakaoLogin}
-                            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
+                            className="px-4 py-2 bg-white text-red-600 rounded-full font-bold hover:bg-yellow-300 transition-all hover:scale-105 shadow-md"
                         >
                             카카오 로그인
                         </button>

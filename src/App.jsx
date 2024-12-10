@@ -11,14 +11,12 @@ function App() {
     const setUser = useAuthStore(state => state.setUser);
 
     useEffect(() => {
-        // 현재 세션 확인
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session?.user) {
                 setUser(session.user);
             }
         });
 
-        // 인증 상태 변경 감지
         const {
             data: { subscription },
         } = supabase.auth.onAuthStateChange((_event, session) => {

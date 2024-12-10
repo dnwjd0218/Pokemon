@@ -17,18 +17,19 @@ function Favorite() {
     };
 
     return (
-        <div className="p-4 bg-yellow-100 min-h-screen">
-            <div className="flex items-center mb-4 relative">
-                <h2 className="text-2xl font-bold text-gray-700 flex-grow text-center">찜한 포켓몬</h2>
-                {favorites.length > 0 && (
-                    <button
-                        onClick={clearFavorites}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 absolute right-0"
-                    >
-                        전체 삭제
-                    </button>
-                )}
-            </div>
+<div className="p-4 pt-24 bg-gradient-to-b from-yellow-50 to-yellow-100 min-h-screen">
+    <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-800">찜한 포켓몬</h2>
+            {favorites.length > 0 && (
+                <button 
+                    onClick={clearFavorites}
+                    className="px-6 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-md"
+                >
+                    전체 삭제
+                </button>
+            )}
+        </div>
             {favorites.length === 0 ? (
                 <p className="text-center text-gray-500 my-4">찜한 포켓몬이 없습니다.</p>
             ) : (
@@ -49,6 +50,7 @@ function Favorite() {
                     ))}
                 </div>
             )}
+        </div>
         </div>
     );
 }

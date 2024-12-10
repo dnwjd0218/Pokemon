@@ -38,7 +38,7 @@ function Search() {
                         type="text"
                         onChange={handleInputChange}
                         placeholder="포켓몬 이름을 입력하세요"
-                        className="bg-red-500 px-4 py-1 rounded text-white focus:outline-none"
+                        className="bg-white px-4 py-2 rounded-full text-red-500 focus:outline-none font-bold shadow-md"
                         autoFocus
                     />
                     <button
